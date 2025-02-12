@@ -1,41 +1,32 @@
-#!/usr/bin/env bash
-# I hate the kill command
+#!/bin/bash
 
-PID_FILE="/var/run/myscript.pid"
-
-# Function to clean up PID file and exit
-clean_up() {
-    echo "Cleaning up..."
-    if [ -f "$PID_FILE" ]; then
-        rm "$PID_FILE"
-        echo "PID file removed."
-        exit 0
-    else
-        echo "$PID_FILE not found"
-        exit 1
-    fi
+# Function to handle SIGTERM signal
+handle_SIGTERM() {
+    echo "I hate the kill command"
 }
 
-# Store the current process ID in a PID file
-echo "Creating PID file..."
-if echo $$ > "$PID_FILE"; then
-    echo "PID file created successfully"
-else
-    echo "Failed to create PID file"
-    exit 1
-fi
+# Function to handle SIGINT signal
+handle_SIGINT() {
+    echo "Y U no love me?!"
+}
 
-# Call the clean_up function when the script exits
-trap clean_up EXIT
+# Function to handle SIGQUIT and SIGTERM signals (cleanup)
+cleanup() {
+    rm -f /var/run/myscript.pid
+    exit 0
+}
 
-# Simulate some work (replace with actual script logic)
-echo "Simulating work with sleep..."
-sleep 10  # Simulating some background work (replace with your actual work)
+# Trap signals
+trap 'handle_SIGTERM' SIGTERM
+trap 'handle_SIGINT' SIGINT
+trap 'cleanup' SIGQUIT
+trap 'cleanup' SIGTERM
 
-# Check if the process is running (PID file should exist)
-echo "Checking if PID file exists..."
-if [ -f "$PID_FILE" ]; then
-    echo "OK"
-else
-    echo "10-process_and_pid_file not running"
-fi
+# Write the PID to the file
+echo $$ > /var/run/myscript.pid
+
+# Infinite loop to print "To infinity and beyond"
+while true; do
+    echo "To infinity and beyond"
+    sleep 1
+done
