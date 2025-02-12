@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# i love you
+# I hate the kill command
 
 PID_FILE="/var/run/myscript.pid"
 
