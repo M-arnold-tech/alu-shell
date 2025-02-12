@@ -1,41 +1,14 @@
 #!/usr/bin/env bash
-# i love you
+# This script Creates the file /var/run/myscript.pid containing its PID, Displays To infinity and beyond indefinitely, Displays I hate the kill command when receiving a SIGTERM signal, Displays Y U no love me?! when receiving a SIGINT signal, Deletes the file /var/run/myscript.pid and terminates itself when receiving a SIGQUIT or SIGTERM signal
 
-PID_FILE="/var/run/myscript.pid"
+sudo bash -c "echo $$ > /var/run/myscript.pid"
+trap 'echo "Y U no love me?!"' SIGINT
+trap "sudo rm -f /var/run/myscript.pid; exit" SIGQUIT
+trap "sudo rm -f /var/run/myscript.pid; echo I hate the kill command; exit" SIGTERM
 
-# Function to clean up PID file and exit
-clean_up() {
-    echo "Cleaning up..."
-    if [ -f "$PID_FILE" ]; then
-        rm "$PID_FILE"
-        echo "PID file removed."
-        exit 0
-    else
-        echo "$PID_FILE not found"
-        exit 1
-    fi
-}
+while :
+do
+	echo "To infinity and beyond"
+	sleep 2
 
-# Store the current process ID in a PID file
-echo "Creating PID file..."
-if echo $$ > "$PID_FILE"; then
-    echo "PID file created successfully"
-else
-    echo "Failed to create PID file"
-    exit 1
-fi
-
-# Call the clean_up function when the script exits
-trap clean_up EXIT
-
-# Simulate some work (replace with actual script logic)
-echo "Simulating work with sleep..."
-sleep 10  # Simulating some background work (replace with your actual work)
-
-# Check if the process is running (PID file should exist)
-echo "Checking if PID file exists..."
-if [ -f "$PID_FILE" ]; then
-    echo "OK"
-else
-    echo "10-process_and_pid_file not running"
-fi
+done
