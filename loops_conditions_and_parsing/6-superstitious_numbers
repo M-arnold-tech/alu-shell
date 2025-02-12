@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+#This script is displaying "Best School" 10 times
+#Prints numbers
+
+
+look="bad luck from China"
+look1="bad luck from Japan"
+look2="bad luck from Italy"
+i="1"
+while [ $i -lt 21 ]; do
+	case $i in
+		4)
+			echo "$i" && echo "$look"
+			;;
+		9)
+			echo "$i" && echo "$look1"
+			;;
+		17)
+			echo "$i" && echo "$look2"
+			;;
+		*)
+			echo "$i"
+			;;
+	esac
+	((i++))
+done
